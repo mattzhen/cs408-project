@@ -5,6 +5,11 @@ const db = require('./bin/db');
 const fs = require('fs');
 
 const index = require('./routes/index');
+const create = require('./routes/create-account');
+const login = require('./routes/login');
+const groceries = require('./routes/groceries');
+const addItem = require('./routes/add-item');
+const moreInfo = require('./routes/item-details');
 
 const app = express();
 
@@ -39,6 +44,11 @@ app.use((request, response, next) => {
   next();
 });
 app.use('/', index);
+app.use('/', create);
+app.use('/', login);
+app.use('/', groceries);
+app.use('/', addItem);
+app.use('/', moreInfo);
 
 
 module.exports = app;
