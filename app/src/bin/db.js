@@ -1,4 +1,5 @@
 const Database = require('better-sqlite3');
+const bcrypt = require('bcrypt');
 
 const createUsersTableSQL = `
   CREATE TABLE IF NOT EXISTS users (
@@ -81,9 +82,31 @@ function createDatabaseManager(dbPath) {
 //        return database.prepare('SELECT * FROM todos ORDER BY id DESC').all();
 //      },
 
+      createUser: async (username, password) => {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const stmt = database.prepare('INSERT INTO users (username, password) VALUES (?, ?)');
+        const result = stmt.run(username, hashedPassword);
+        return result.lastInsertRowid;
+      },
+
+      verifyUser: async (username, password) => {
+        const stmt = database.prepare('SELECT * FROM users WHERE username = ?');
+        const user = stmt.get(username);
+        if (!user) {
+          return null;
+        }
+        const match = await bcrypt.compare(password, user.password);
+        return match ? user : null;
+      },
+
       getGroceriesByUser: (user_id) => {
         const stmt =  database.prepare('SELECT item_name, quantity, price, was_obtained FROM groceries WHERE user_id = ? ORDER BY was_obtained, section');
         return stmt.all(user_id);
+      },
+
+      getTotalPriceByUser: (user_id) => {
+        const stmt = database.prepare('SELECT SUM(price * quantity) AS total FROM groceries WHERE user_id = ?');
+        return stmt.get(user_id).total;
       },
 
       getItemDetails: (item_id) => {
@@ -105,6 +128,11 @@ function createDatabaseManager(dbPath) {
 
       deleteItem: (item_id) => {
         const info = database.prepare('DELETE FROM groceries WHERE item_id = ?').run(item_id);
+        return info.changes;
+      },
+
+      deleteObtainedItems: (user_id) => {
+        const info = database.prepare('DELETE FROM groceries WHERE user_id = ? AND was_obtained = 1').run(user_id);
         return info.changes;
       },
 
