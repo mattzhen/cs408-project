@@ -13,11 +13,14 @@
     "test:debug": "cross-env NODE_ENV=test playwright test --debug"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.5.0",
     "debug": "4.4.3",
+    "dotenv": "^17.4.1",
     "ejs": "^3.1.10",
     "express": "~5.2.1",
-    "express-ejs-layouts": "^2.5.1"
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",

@@ -1,8 +1,10 @@
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const db = require('./bin/db');
 const fs = require('fs');
+const session = require('express-session');
 
 const index = require('./routes/index');
 const create = require('./routes/create-account');
@@ -38,6 +40,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // This is for static files that are not using a template engine
 app.use(express.static(path.join(__dirname, 'static')));
 
+// Session setup
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
+
 // Middleware to attach database to request
 app.use((request, response, next) => {
   request.db = databaseManager.dbHelpers;
@@ -50,5 +59,13 @@ app.use('/', groceries);
 app.use('/', addItem);
 app.use('/', moreInfo);
 
+// Used for testing purposes to clear and seed the database
+if (process.env.NODE_ENV === 'test') {
+  app.post('/test/reset', (req, res) => {
+    databaseManager.dbHelpers.clearDatabase();
+    databaseManager.dbHelpers.seedTestData();
+    res.sendStatus(200);
+  });
+}
 
 module.exports = app;

@@ -269,6 +269,7 @@ cmd_new() {
   fi
 
   EC2_DEPLOY_DIR="/home/ubuntu/${APP_NAME}"
+  SESSION_SECRET=$(openssl rand -hex 32)
   {
     echo "APP_NAME=${APP_NAME}"
     echo "APP_VERSION=${APP_VERSION}"
@@ -277,6 +278,7 @@ cmd_new() {
     echo "EC2_KEY_NAME=${EC2_KEY_NAME}"
     echo "DOCKER_USERNAME=${DOCKER_USERNAME}"
     echo "DOCKER_PAT=${DOCKER_PAT}"
+    echo "SESSION_SECRET=${SESSION_SECRET}"
   } > .env
   echo "✔ .env file created."
   echo "Initializing new development environment..."
