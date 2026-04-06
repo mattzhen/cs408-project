@@ -45,6 +45,8 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run tests
       run: npm run test
+      env:
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
   docker-build:
     needs: unit-tests
