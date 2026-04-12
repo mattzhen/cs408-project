@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const createUsersTableSQL = `
   CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
   )`;
 
@@ -89,6 +89,11 @@ function createDatabaseManager(dbPath) {
         return result.lastInsertRowid;
       },
 
+      getUser: (username) => {
+        const stmt = database.prepare('SELECT user_id FROM users WHERE username = ?');
+        return stmt.get(username);
+      },
+
       verifyUser: async (username, password) => {
         const stmt = database.prepare('SELECT * FROM users WHERE username = ?');
         const user = stmt.get(username);
@@ -96,7 +101,7 @@ function createDatabaseManager(dbPath) {
           return null;
         }
         const match = await bcrypt.compare(password, user.password);
-        return match ? user : null;
+        return match ? { user_id: user.user_id, username: user.username } : null;
       },
 
       getGroceriesByUser: (user_id) => {
