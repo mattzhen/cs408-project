@@ -34,8 +34,6 @@ test.describe('View List page', () => {
     await expect(page.locator('#nullWarning')).toBeVisible();
     
     await expect(page.locator('#totalCost')).toContainText('$5.00');
-    
-    await page.screenshot({ path: 'test-results/grocery-list.png' });
   });
 
 });
