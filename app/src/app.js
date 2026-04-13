@@ -12,6 +12,7 @@ const login = require('./routes/login');
 const groceries = require('./routes/groceries');
 const addItem = require('./routes/add-item');
 const moreInfo = require('./routes/item-details');
+const account = require('./routes/account');
 
 const app = express();
 
@@ -52,12 +53,21 @@ app.use((request, response, next) => {
   request.db = databaseManager.dbHelpers;
   next();
 });
+
+// Middleware to add session data to locals
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = !!req.session.user_id;
+  res.locals.userId = req.session.user_id;
+  next();
+});
+
 app.use('/', index);
 app.use('/', create);
 app.use('/', login);
 app.use('/', groceries);
 app.use('/', addItem);
 app.use('/', moreInfo);
+app.use('/', account);
 
 // Used for testing purposes to clear and seed the database
 if (process.env.NODE_ENV === 'test') {
