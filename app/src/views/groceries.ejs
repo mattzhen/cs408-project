@@ -1,1 +1,32 @@
-<p>groceries not implemented</p>
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Obtained</th>
+        <th>More info</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% groceries.forEach((item) => { %>
+        <tr>
+          <td><%= item.item_name %></td>
+          <td><%= item.quantity %></td>
+          <td><%= item.price ? '$' + item.price.toFixed(2) : 'N/A' %></td>
+          <td><%= item.was_obtained ? 'Yes' : 'No' %></td>
+          <td>
+            <a href="/item-details/<%= item.item_id %>" class="btn btn-primary btn-sm">View More</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<% if (hasNull) { %>
+  <p class="text-warning">* Some items are missing a price and are not included in the total.</p>
+<% } %>
+
+<p id="totalCost">Total: <%= total ? '$' + total.toFixed(2) : '$0.00' %></p>
