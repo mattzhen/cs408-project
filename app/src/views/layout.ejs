@@ -15,8 +15,19 @@
         <div>
           <ul class="nav navbar-right">
             <li><a class="nav-link" href="/">Home</a></li>
-            <li><a class="nav-link" href="/groceries">View List</a></li>
-            <li><a class="nav-link" href="/add-item">Add to List</a></li>
+            <% if (isLoggedIn) { %>
+              <li><a class="nav-link" href="/groceries">View List</a></li>
+              <li><a class="nav-link" href="/add-item">Add to List</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Account
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="/signout">Sign Out</a></li>
+                  <li><a class="dropdown-item" href="/delete-account">Delete Account</a></li>
+                </ul>
+              </li>
+            <% } %>
           </ul>
         </div>
     </nav>

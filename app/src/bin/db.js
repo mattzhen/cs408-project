@@ -105,7 +105,7 @@ function createDatabaseManager(dbPath) {
       },
 
       getGroceriesByUser: (user_id) => {
-        const stmt =  database.prepare('SELECT item_name, quantity, price, was_obtained FROM groceries WHERE user_id = ? ORDER BY was_obtained, section');
+        const stmt =  database.prepare('SELECT item_id, item_name, quantity, price, was_obtained FROM groceries WHERE user_id = ? ORDER BY was_obtained, section');
         return stmt.all(user_id);
       },
 
@@ -139,6 +139,17 @@ function createDatabaseManager(dbPath) {
       deleteObtainedItems: (user_id) => {
         const info = database.prepare('DELETE FROM groceries WHERE user_id = ? AND was_obtained = 1').run(user_id);
         return info.changes;
+      },
+
+      deleteUser: (userId) => {
+        const deleteGroceries = database.prepare('DELETE FROM groceries WHERE user_id = ?');
+        const deleteUser = database.prepare('DELETE FROM users WHERE user_id = ?');
+        
+        const deleteAll = database.transaction(() => {
+          deleteGroceries.run(userId);
+          deleteUser.run(userId);
+        })
+        deleteAll();
       },
 
       toggleAcquired: (item_id) => {
