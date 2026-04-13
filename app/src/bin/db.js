@@ -47,19 +47,30 @@ function createDatabaseManager(dbPath) {
         }
       },
 
-      seedTestData: () => {
+      seedTestData: async () => {
         if (process.env.NODE_ENV === 'test') {
           ensureConnected();
-          const insert = database.prepare('INSERT INTO groceries (user_id, item_name, section, quantity, price, brand, was_obtained) VALUES (?, ?, ?, ?, ?, ?, ?)');
-          const testData = [
+          const hashedPassword = await bcrypt.hash('testpassword', 10);
+
+          const insertUser = database.prepare('INSERT INTO users (user_id, username, password) VALUES (?, ?, ?)');
+          const insertGroceries = database.prepare('INSERT INTO groceries (user_id, item_name, section, quantity, price, brand, was_obtained) VALUES (?, ?, ?, ?, ?, ?, ?)');
+          
+          const testUsers = [
+            { user_id: 1, username: 'testuser1', password: hashedPassword },
+            { user_id: 2, username: 'testuser2', password: hashedPassword }
+          ];
+          const testGroceryData = [
             { user_id: 1, item_name: "Avocado", section: "Fresh Fruit", quantity: 5, price: 0.68, brand: "Fresh Hass Avocados", was_obtained: 1},
             { user_id: 1, item_name: "Loaf of Whole Wheat Bread", section: "Bakery or Bread Aisle", quantity: 1, price: 1.97, brand: "Great Value", was_obtained: 0},
             { user_id: 2, item_name: "Bananas", section: "Produce", quantity: 6, price: null, brand: null, was_obtained: 0 },
             { user_id: 2, item_name: "Spinach", section: "Produce", quantity: 2, price: 2.50, brand: "Organic Valley", was_obtained: 1 }
           ];
-          const insertMany = database.transaction((items) => {
-            for (const item of items) {
-              insert.run(
+          const seedAll = database.transaction(() => {
+            for (const user of testUsers) {
+              insertUser.run(user.user_id, user.username, user.password);
+            }
+            for (const item of testGroceryData) {
+              insertGroceries.run(
                 item.user_id,
                 item.item_name,
                 item.section,
@@ -70,8 +81,8 @@ function createDatabaseManager(dbPath) {
               );
             }
           });
-          insertMany(testData);
           console.log('Seeding test data into database');
+          seedAll();
         } else {
           console.warn('seedTestData called outside of test environment. FIXME!');
 
@@ -111,7 +122,13 @@ function createDatabaseManager(dbPath) {
 
       getTotalPriceByUser: (user_id) => {
         const stmt = database.prepare('SELECT SUM(price * quantity) AS total FROM groceries WHERE user_id = ?');
-        return stmt.get(user_id).total;
+        const result = stmt.get(user_id).total;
+        return result ? parseFloat(result) : 0;
+      },
+
+      hasNullPrices: (user_id) => {
+        const stmt = database.prepare('SELECT COUNT(*) AS nullCount FROM groceries WHERE user_id = ? AND price IS NULL');
+        return stmt.get(user_id).nullCount > 0;
       },
 
       getItemDetails: (item_id) => {

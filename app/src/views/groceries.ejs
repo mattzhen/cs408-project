@@ -26,7 +26,7 @@
 </div>
 
 <% if (hasNull) { %>
-  <p class="text-warning">* Some items are missing a price and are not included in the total.</p>
+  <p id="nullWarning" class="text-warning">* Some items are missing a price and are not included in the total.</p>
 <% } %>
 
 <p id="totalCost">Total: <%= total ? '$' + total.toFixed(2) : '$0.00' %></p>

@@ -71,7 +71,7 @@ app.use('/', account);
 
 // Used for testing purposes to clear and seed the database
 if (process.env.NODE_ENV === 'test') {
-  app.post('/test/reset', (req, res) => {
+  app.post('/test/reset', async (req, res) => {
     databaseManager.dbHelpers.clearDatabase();
     databaseManager.dbHelpers.seedTestData();
     res.sendStatus(200);
