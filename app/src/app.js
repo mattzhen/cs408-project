@@ -73,7 +73,7 @@ app.use('/', account);
 if (process.env.NODE_ENV === 'test') {
   app.post('/test/reset', async (req, res) => {
     databaseManager.dbHelpers.clearDatabase();
-    databaseManager.dbHelpers.seedTestData();
+    await databaseManager.dbHelpers.seedTestData();
     res.sendStatus(200);
   });
 }
