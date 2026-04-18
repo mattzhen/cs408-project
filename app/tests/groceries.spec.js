@@ -8,9 +8,9 @@ test.describe('View List page', () => {
     await request.post('/test/reset');
   });
 
-  test('should display groceries page', async ({ page }) => {
+  test('should redirect to login', async ({ page }) => {
     await page.goto('/groceries');
-    await expect(page).toHaveTitle(/My Groceries/);
+    await expect(page).toHaveTitle(/Log in/);
   });
 
   test('displays grocery list for logged in user', async ({ page }) => {
