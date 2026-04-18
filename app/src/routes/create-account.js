@@ -36,7 +36,7 @@ router.post('/create-account', async (req, res) => {
 
   try {
     const userId = await req.db.createUser(cleanUsername, cleanPassword);
-    req.session.userId = userId;
+    req.session.user_id = userId;
     res.render('create-account', { title: 'Create Account', error: null, success: 'Account created successfully!', username: '' });
   } catch (err) {
     console.error(err);
