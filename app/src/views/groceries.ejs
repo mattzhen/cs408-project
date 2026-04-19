@@ -24,9 +24,17 @@
     </tbody>
   </table>
 </div>
+<a href="/add-item" class="btn btn-secondary my-3">Add more items</a>
 
 <% if (hasNull) { %>
   <p id="nullWarning" class="text-warning">* Some items are missing a price and are not included in the total.</p>
 <% } %>
 
-<p id="totalCost">Total: <%= total ? '$' + total.toFixed(2) : '$0.00' %></p>
+<br>
+<p id="totalCost" class="mb-0 fs-5">Total: <%= total ? '$' + total.toFixed(2) : '$0.00' %></p>
+<div class="d-flex align-items-center gap-2">
+  <p class="mb-0 fs-5">Done shopping?</p>
+  <form action="/delete-obtained" method="POST" onsubmit="return confirm('Are you sure?')">
+    <button type="submit" class="btn btn-danger">Delete Obtained Items</button>
+  </form>
+</div>
