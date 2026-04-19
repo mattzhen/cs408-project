@@ -9,4 +9,18 @@ router.get('/add-item', function(req, res, next) {
 
   res.render('add-item', { title: 'Add to list' });
 });
+
+/* POST to add an item */
+router.post('/add-item', (req, res) => {
+  if (!res.locals.isLoggedIn) {
+    return res.redirect('/login');
+  }
+
+  const { item_name, quantity, section, cost, brand } = req.body;
+
+  req.db.createItem(req.session.user_id, item_name, section, quantity, cost || null, brand || null);
+
+  res.redirect('/groceries');
+});
+
 module.exports = router;
