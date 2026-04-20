@@ -40,8 +40,8 @@ function createDatabaseManager(dbPath) {
       clearDatabase: () => {
         if (process.env.NODE_ENV === 'test') {
           ensureConnected();
-          database.prepare('DELETE FROM users').run();
           database.prepare('DELETE FROM groceries').run();
+          database.prepare('DELETE FROM users').run();
         } else {
           console.warn('clearDatabase called outside of test environment. FIXME!');
         }
