@@ -2,10 +2,9 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  fullyParallel: true, // Run tests serially to avoid database conflicts
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: 5, // Multiple workers to run tests in parallel
+  workers: 1, // Limited to 1 worker to prevent race conditions when resetting the test database
   reporter: 'html',
 
   use: {
