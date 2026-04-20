@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET additional info page. */
-router.get('/item-details', function(req, res, next) {
+router.get('/item-details/:item_id', function(req, res, next) {
   if (!res.locals.isLoggedIn) {
     return res.redirect('/login');
   }

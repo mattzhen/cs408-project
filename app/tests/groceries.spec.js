@@ -15,8 +15,8 @@ test.describe('View List page', () => {
 
   test('displays grocery list for logged in user', async ({ page }) => {
     await page.goto('http://localhost:3000/login');
-    await page.fill('#username', 'testuser1');
-    await page.fill('#password', 'testpassword');
+    await page.locator('#username').fill('testuser1');
+    await page.locator('#password').fill('testpassword');
     await page.click('button[type="submit"]');
     
     await expect(page.locator('table')).toBeVisible();
@@ -24,14 +24,14 @@ test.describe('View List page', () => {
     await expect(page.locator('text=Avocado')).toBeVisible();
     await expect(page.locator('text=Loaf of Whole Wheat Bread')).toBeVisible();
   
-    await expect(page.locator('text=Bananas')).not.toBeVisible();
-    await expect(page.locator('text=Spinach')).not.toBeVisible();
+    await expect(page.locator('text=Bananas')).toBeHidden();
+    await expect(page.locator('text=Spinach')).toBeHidden();
   });
   
   test('displays accurate price along with null warning', async ({ page }) => {
     await page.goto('/login');
-    await page.fill('#username', 'testuser2');
-    await page.fill('#password', 'testpassword');
+    await page.locator('#username').fill('testuser2');
+    await page.locator('#password').fill('testpassword');
     await page.click('button[type="submit"]');
     await page.waitForURL('/groceries');
     
