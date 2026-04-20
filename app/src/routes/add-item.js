@@ -18,6 +18,25 @@ router.post('/add-item', (req, res) => {
 
   const { item_name, quantity, section, cost, brand } = req.body;
 
+  // Validate required fields
+  if (!item_name || !quantity || !section) {
+    return res.status(400).send('Missing required fields');
+  }
+
+  // Validate quantity is a positive integer
+  const parsedQuantity = parseInt(quantity);
+  if (isNaN(parsedQuantity) || parsedQuantity < 1) {
+    return res.status(400).send('Quantity must be a positive number');
+  }
+
+  // Validate cost if provided
+  if (cost) {
+    const parsedCost = parseFloat(cost);
+    if (isNaN(parsedCost) || parsedCost < 0 || !/^\d+(\.\d{1,2})?$/.test(cost)) {
+      return res.status(400).send('Cost must be a positive number with up to two decimal places');
+    }
+  }
+
   req.db.createItem(req.session.user_id, item_name, section, quantity, cost || null, brand || null);
 
   res.redirect('/groceries');
