@@ -18,9 +18,14 @@ test.describe('Item details page - authenticated', () => {
   test('should display item details page', async ({ page }) => {
     await page.goto('/item-details/1');
     await expect(page).toHaveTitle(/Viewing item details/);
+    await expect(page.locator('dd').filter({ hasText: /^Avocado$/ })).toBeVisible();
   });
 
-
+  test('should not display other user item', async ({ page }) => {
+    await page.goto('/item-details/3');
+    await expect(page).toHaveTitle(/Viewing item details/);
+    await expect(page.locator('dd').filter({ hasText: /^Bananas$/ })).toBeHidden();
+  });
 
 });
 

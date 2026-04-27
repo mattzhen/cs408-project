@@ -57,7 +57,7 @@ app.use((request, response, next) => {
 // Middleware to add session data to locals
 app.use((req, res, next) => {
   res.locals.isLoggedIn = !!req.session.user_id;
-  res.locals.userId = req.session.user_id;
+  res.locals.user_id = req.session.user_id;
   next();
 });
 

@@ -53,17 +53,17 @@ function createDatabaseManager(dbPath) {
           const hashedPassword = await bcrypt.hash('testpassword', 10);
 
           const insertUser = database.prepare('INSERT INTO users (user_id, username, password) VALUES (?, ?, ?)');
-          const insertGroceries = database.prepare('INSERT INTO groceries (user_id, item_name, section, quantity, price, brand, was_obtained) VALUES (?, ?, ?, ?, ?, ?, ?)');
+          const insertGroceries = database.prepare('INSERT INTO groceries (item_id, user_id, item_name, section, quantity, price, brand, was_obtained) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
           
           const testUsers = [
             { user_id: 1, username: 'testuser1', password: hashedPassword },
             { user_id: 2, username: 'testuser2', password: hashedPassword }
           ];
           const testGroceryData = [
-            { user_id: 1, item_name: "Avocado", section: "Fresh Fruit", quantity: 5, price: 0.68, brand: "Fresh Hass Avocados", was_obtained: 1},
-            { user_id: 1, item_name: "Loaf of Whole Wheat Bread", section: "Bakery or Bread Aisle", quantity: 1, price: 1.97, brand: "Great Value", was_obtained: 0},
-            { user_id: 2, item_name: "Bananas", section: "Produce", quantity: 6, price: null, brand: null, was_obtained: 0 },
-            { user_id: 2, item_name: "Spinach", section: "Produce", quantity: 2, price: 2.50, brand: "Organic Valley", was_obtained: 1 }
+            { item_id:1, user_id: 1, item_name: "Avocado", section: "Fresh Fruit", quantity: 5, price: 0.68, brand: "Fresh Hass Avocados", was_obtained: 1},
+            { item_id:2, user_id: 1, item_name: "Loaf of Whole Wheat Bread", section: "Bakery or Bread Aisle", quantity: 1, price: 1.97, brand: "Great Value", was_obtained: 0},
+            { item_id:3, user_id: 2, item_name: "Bananas", section: "Produce", quantity: 6, price: null, brand: null, was_obtained: 0 },
+            { item_id:4, user_id: 2, item_name: "Spinach", section: "Produce", quantity: 2, price: 2.50, brand: "Organic Valley", was_obtained: 1 }
           ];
           const seedAll = database.transaction(() => {
             for (const user of testUsers) {
@@ -71,6 +71,7 @@ function createDatabaseManager(dbPath) {
             }
             for (const item of testGroceryData) {
               insertGroceries.run(
+                item.item_id,
                 item.user_id,
                 item.item_name,
                 item.section,
@@ -126,14 +127,20 @@ function createDatabaseManager(dbPath) {
         return result ? parseFloat(result) : 0;
       },
 
+      getTotalPriceById: (item_id) => {
+        const stmt = database.prepare('SELECT SUM(price * quantity) AS total FROM groceries WHERE item_id = ?');
+        const result = stmt.get(item_id).total;
+        return result ? parseFloat(result) : 0;
+      },
+
       hasNullPrices: (user_id) => {
         const stmt = database.prepare('SELECT COUNT(*) AS nullCount FROM groceries WHERE user_id = ? AND price IS NULL');
         return stmt.get(user_id).nullCount > 0;
       },
 
-      getItemDetails: (item_id) => {
-        const stmt =  database.prepare('SELECT item_name, section, quantity, price, brand, was_obtained FROM groceries WHERE item_id = ? ORDER BY was_obtained, section');
-        return stmt.all(item_id);
+      getItemDetails: (item_id, user_id) => {
+        const stmt =  database.prepare('SELECT item_name, section, quantity, price, brand, was_obtained FROM groceries WHERE item_id = ? AND user_id = ? ORDER BY was_obtained, section');
+        return stmt.get(item_id, user_id);
       },
 
       createItem: (user_id, item_name, section, quantity, price = null, brand = null) => {
@@ -148,8 +155,8 @@ function createDatabaseManager(dbPath) {
 //        return info.changes;
 //      },
 
-      deleteItem: (item_id) => {
-        const info = database.prepare('DELETE FROM groceries WHERE item_id = ?').run(item_id);
+      deleteItem: (item_id, user_id) => {
+        const info = database.prepare('DELETE FROM groceries WHERE item_id = ? AND user_id = ?').run(item_id, user_id);
         return info.changes;
       },
 
@@ -169,8 +176,8 @@ function createDatabaseManager(dbPath) {
         deleteAll();
       },
 
-      toggleAcquired: (item_id) => {
-        const info = database.prepare('UPDATE groceries SET was_obtained = NOT was_obtained WHERE item_id = ?').run(item_id);
+      toggleAcquired: (item_id, user_id) => {
+        const info = database.prepare('UPDATE groceries SET was_obtained = NOT was_obtained WHERE item_id = ? AND user_id = ?').run(item_id, user_id);
         return info.changes;
       },
 
