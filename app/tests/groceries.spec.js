@@ -23,6 +23,7 @@ test.describe('View List page', () => {
   
     await expect(page.locator('text=Avocado')).toBeVisible();
     await expect(page.locator('text=Loaf of Whole Wheat Bread')).toBeVisible();
+    await expect(page.locator('text=Orange Juice')).toBeVisible();
   
     await expect(page.locator('text=Bananas')).toBeHidden();
     await expect(page.locator('text=Spinach')).toBeHidden();
@@ -38,6 +39,21 @@ test.describe('View List page', () => {
     await expect(page.locator('#nullWarning')).toBeVisible();
     
     await expect(page.locator('#totalCost')).toContainText('$5.00');
+  });
+
+  test('delete obtained items removes obtained items from list', async ({ page }) => {
+    await page.goto('/login');
+    await page.locator('#username').fill('testuser1');
+    await page.locator('#password').fill('testpassword');
+    await page.click('button[type="submit"]');
+
+    page.on('dialog', dialog => dialog.accept());
+    await page.click('button:has-text("Delete Obtained Items")');
+    await page.waitForURL(/groceries/);
+
+    await expect(page.locator('tr', { hasText: 'Avocado' })).toBeHidden();
+    await expect(page.locator('tr', { hasText: 'Orange Juice' })).toBeHidden();
+    await expect(page.locator('tr', { hasText: 'Loaf of Whole Wheat Bread' })).toBeVisible();
   });
 
 });

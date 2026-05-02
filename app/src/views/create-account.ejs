@@ -1,41 +1,40 @@
 <h1 class="mb-3"><%= title %></h1>
 
-
 <form method="POST" action="/create-account">
-    <div class="mb-3">
-        <label for="username" class="form-label">Username:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="username"
-          name="username"
-          value="<%= username %>"
-          placeholder="Username"
-          aria-describedby="usernameRequirements"
-          required
-        >
-        <small id="usernameRequirements" class="form-text text-muted">
-            Username can be 3-32 characters long.
-            It must not contain spaces, special characters (except _), or emoji.
-        </small>
-    </div>
-    <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          name="pass"
-          placeholder="Password"
-          aria-describedby="passwordRequirementsAndRecommendations"
-          required
-        >
-        <small id="passwordRequirementsAndRecommendations" class="form-text text-muted">
-            Password can be between 8-72 characters long.
-            Good practice is to have letters, numbers, and special characters.
-        </small>
-    </div>
-    <button type="submit" class="btn btn-dark">Create Account</button>
+  <div class="mb-3">
+    <label for="username" class="form-label">Username:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="username"
+      name="username"
+      value="<%= username %>"
+      placeholder="Username"
+      aria-describedby="usernameRequirements"
+      required
+    >
+    <small id="usernameRequirements" class="form-text text-muted">
+      Username can be 3-32 characters long.
+      It must not contain spaces, special characters (except _), or emoji.
+    </small>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password:</label>
+    <input
+      type="password"
+      class="form-control"
+      id="password"
+      name="pass"
+      placeholder="Password"
+      aria-describedby="passwordRequirementsAndRecommendations"
+      required
+    >
+    <small id="passwordRequirementsAndRecommendations" class="form-text text-muted">
+      Password can be between 8-72 characters long.
+      Good practice is to have letters, numbers, and special characters.
+    </small>
+  </div>
+  <button type="submit" class="btn btn-dark">Create Account</button>
 </form>
 <br>
 

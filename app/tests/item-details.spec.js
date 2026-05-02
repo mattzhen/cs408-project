@@ -31,9 +31,18 @@ test.describe('Item details page - authenticated', () => {
   });
 
   test('should not display other user item', async ({ page }) => {
-    await page.goto('/item-details/3');
+    await page.goto('/item-details/4');
     await expect(page).toHaveTitle(/Viewing item details/);
     await expect(page.locator('dd').filter({ hasText: /^Bananas$/ })).toBeHidden();
+  });
+
+  test('delete item removes it from grocery list', async ({ page }) => {
+    await page.goto('/item-details/1');
+    await page.click('button:has-text("Delete Item")');
+    await page.waitForURL(/groceries/);
+
+    const row = page.locator('tr', { hasText: 'Avocado' });
+    await expect(row).toBeHidden();
   });
 
 });

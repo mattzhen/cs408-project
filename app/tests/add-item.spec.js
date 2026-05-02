@@ -22,16 +22,16 @@ test.describe('Add item page - authenticated', () => {
   });
 
   test('add item appears in grocery list', async ({ page }) => {
-  await page.fill('#item_name', 'Bananas');
-  await page.fill('#quantity', '3');
-  await page.fill('#section', 'Fresh Fruit');
-  await page.click('button:has-text("Add Item")');
+    await page.fill('#item_name', 'Bananas');
+    await page.fill('#quantity', '3');
+    await page.fill('#section', 'Fresh Fruit');
+    await page.click('button:has-text("Add Item")');
 
-  await page.waitForURL(/groceries/);
+    await page.waitForURL(/groceries/);
 
-  const row = await page.locator('tr', { hasText: 'Bananas' });
-  await expect(row).toBeVisible();
-});
+    const row = await page.locator('tr', { hasText: 'Bananas' });
+    await expect(row).toBeVisible();
+  });
 
   // Required fields
   test('should not submit without item name', async ({ page }) => {
