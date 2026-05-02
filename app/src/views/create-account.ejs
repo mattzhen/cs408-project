@@ -1,4 +1,4 @@
-<h1 class="text-white mb-3"><%= title %></h1>
+<h1 class="mb-3"><%= title %></h1>
 
 
 <form method="POST" action="/create-account">
@@ -45,5 +45,5 @@
 
 <% if (success) { %>
   <div class="alert alert-success"> <%= success %></div>
-  <a href="/add-item" class="btn btn-secondary mt-3">Start adding items.</a>
+  <a href="/add-item" class="btn btn-dark mt-3">Start adding items.</a>
 <% } %>

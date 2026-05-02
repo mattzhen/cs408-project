@@ -17,21 +17,20 @@
           <td><%= item.price ? '$' + item.price.toFixed(2) : 'N/A' %></td>
           <td><%= item.was_obtained ? 'Yes' : 'No' %></td>
           <td>
-            <a href="/item-details/<%= item.item_id %>" class="btn btn-primary btn-sm">View More</a>
+            <a href="/item-details/<%= item.item_id %>" class="btn btn-dark btn-sm">View More</a>
           </td>
         </tr>
       <% }) %>
     </tbody>
   </table>
 </div>
-<a href="/add-item" class="btn btn-secondary my-3">Add more items</a>
-
-<% if (hasNull) { %>
-  <p id="nullWarning" class="text-warning">* Some items are missing a price and are not included in the total.</p>
-<% } %>
+<a href="/add-item" class="btn btn-dark my-3">Add more items</a>
 
 <br>
 <p id="totalCost" class="mb-0 fs-5">Total: <%= total ? '$' + total.toFixed(2) : '$0.00' %></p>
+<% if (hasNull) { %>
+  <small id="nullWarning" class="text-warning">* Some items are missing a price and are not included in the total.</p>
+<% } %>
 <div class="d-flex align-items-center gap-2">
   <p class="mb-0 fs-5">Done shopping?</p>
   <form action="/delete-obtained" method="POST" onsubmit="return confirm('Are you sure?')">

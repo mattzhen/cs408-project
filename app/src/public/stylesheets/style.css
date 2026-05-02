@@ -1,8 +1,9 @@
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
   min-height: 100vh;
   padding: 20px 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Cabin', sans-serif;
+  font-size: 16px;
 }
 
 a {
@@ -46,4 +47,22 @@ a {
 
 .nav-link{
   color:black;
+}
+
+img {
+  border: 2px solid #212529;
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+}
+
+.btn {
+  border-radius: 15px;
+  font-weight: 600;
+  border: 2px solid #212529;
+}
+
+.text-warning {
+  color: black !important;
+  font-weight: 600;
 }
