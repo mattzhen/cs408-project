@@ -37,7 +37,7 @@ router.post('/add-item', (req, res) => {
     }
   }
 
-  req.db.createItem(req.session.user_id, item_name, section, quantity, cost || null, brand || null);
+  req.db.createItem(req.session.userId, item_name, section, quantity, cost || null, brand || null);
 
   res.redirect('/groceries');
 });

@@ -12,7 +12,7 @@ router.post('/login', async function(req, res, next) {
     if (!user) {
       return res.render('login', { title:'Log in', error: 'Invalid credentials' });
     }
-    req.session.user_id = user.user_id;
+    req.session.userId = user.userId;
     res.redirect('/groceries');
   } catch (err) {
     next(err);

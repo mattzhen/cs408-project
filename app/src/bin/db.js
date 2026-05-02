@@ -113,7 +113,7 @@ function createDatabaseManager(dbPath) {
           return null;
         }
         const match = await bcrypt.compare(password, user.password);
-        return match ? { user_id: user.user_id, username: user.username } : null;
+        return match ? { userId: user.user_id, username: user.username } : null;
       },
 
       getGroceriesByUser: (user_id) => {

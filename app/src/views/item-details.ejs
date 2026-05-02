@@ -11,7 +11,7 @@
     <dt class="col-sm-3">Brand:</dt>
     <dd class="col-sm-9"><%= item.brand ? item.brand : 'Unknown' %></dd>
 
-    <dt class="col-sm-3">Section</dt>
+    <dt class="col-sm-3">Section:</dt>
     <dd class="col-sm-9"><%= item.section %></dd>
 
     <dt class="col-sm-3">Obtained:</dt>
@@ -20,10 +20,10 @@
   <p id="totalCost" class="mb-0 fs-5">Total: <%= total != 0 ? '$' + total.toFixed(2) : 'Unknown price data' %></p>
 
   <div class="d-flex gap-2 mt-3">
-    <form action="/item-details/<%= item_id %>/toggle" method="POST">
+    <form action="/item-details/<%= itemId %>/toggle" method="POST">
       <button type="submit" class="btn btn-success">Mark Obtained</button>
     </form>
-    <form action="/item-details/<%= item_id %>/delete" method="POST">
+    <form action="/item-details/<%= itemId %>/delete" method="POST">
       <button type="submit" class="btn btn-danger">Delete Item</button>
     </form>
   </div>

@@ -13,7 +13,7 @@ router.get('/signout', (req, res) => {
 
 router.get('/delete-account', (req, res) => {
   try {
-    req.db.deleteUser(req.session.user_id);
+    req.db.deleteUser(req.session.userId);
     req.session.destroy((err) => {
       if (err) {
         console.error(err);
