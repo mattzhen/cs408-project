@@ -21,6 +21,15 @@ test.describe('Item details page - authenticated', () => {
     await expect(page.locator('dd').filter({ hasText: /^Avocado$/ })).toBeVisible();
   });
 
+  test('should mark item obtained', async ({ page }) => {
+    await page.goto('/item-details/2');
+    await page.click('button:has-text("Mark Obtained")');
+
+    await page.waitForURL(/groceries/);
+    const obtainedCell = await page.locator('tr', { hasText: 'Loaf' }).locator('td').nth(3).innerText();
+    expect(obtainedCell).toBe('Yes');
+  });
+
   test('should not display other user item', async ({ page }) => {
     await page.goto('/item-details/3');
     await expect(page).toHaveTitle(/Viewing item details/);

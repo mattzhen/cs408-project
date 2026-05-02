@@ -26,10 +26,9 @@
 </div>
 <a href="/add-item" class="btn btn-dark my-3">Add more items</a>
 
-<br>
-<p id="totalCost" class="mb-0 fs-5">Total: <%= total ? '$' + total.toFixed(2) : '$0.00' %></p>
+<p id="totalCost" class="mb-0 mt-2 fs-5">Total before tax: <%= total ? '$' + total.toFixed(2) : '$0.00' %></p>
 <% if (hasNull) { %>
-  <small id="nullWarning" class="text-warning">* Some items are missing a price and are not included in the total.</p>
+  <small id="nullWarning" class="text-warning">* Some items are missing a price and are not included in the total.</small>
 <% } %>
 <div class="d-flex align-items-center gap-2">
   <p class="mb-0 fs-5">Done shopping?</p>
